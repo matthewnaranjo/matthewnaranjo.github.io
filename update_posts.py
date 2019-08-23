@@ -9,7 +9,7 @@ class UpdatePosts():
     def find_posts(self):
         for file in os.listdir("text reviews/"):
             if file.endswith(".txt"):
-                read = open(file, "r")
+                read = open("text reviews/" + file, "r")
                 data = read.readlines()
                 title = data[0]
                 date = data[2]
