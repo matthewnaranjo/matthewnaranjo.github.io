@@ -33,6 +33,8 @@ class UpdatePosts():
         read = open(template,'r')
         data = read.read()
         data = data.replace("REPLACE IMAGE REF", image_name)
+        data = data.replace("REPLACE TWITTER IMAGE", image_name)
+        data = data.replace("FIND AND REPLACE PATH", image_name)
         data = data.replace("FIND AND REPLACE TITLE", title)
         data = data.replace("FIND AND REPLACE TWITTER TITLE", title)        
         data = data.replace("FIND AND REPLACE DATE", date)
