@@ -34,6 +34,7 @@ class UpdatePosts():
         data = read.read()
         data = data.replace("REPLACE IMAGE REF", image_name)
         data = data.replace("FIND AND REPLACE TITLE", title)
+        data = data.replace("FIND AND REPLACE TWITTER TITLE", title)        
         data = data.replace("FIND AND REPLACE DATE", date)
 
         if len(paragraphs) > 0:
