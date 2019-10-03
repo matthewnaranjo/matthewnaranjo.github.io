@@ -7,24 +7,30 @@ class TopicPages():
         self.links = pd.read_csv("links - all.csv")
         self.num_links = len(self.links.index)
 
-        self.sections = ["Movies", "Video Games"]
-        self.section_map = {"Movies": "movie", "Video Games": "video game"}
+        self.sections = ["Movies", "Video Games", "Outdoors", "Hockey"]
+        self.section_map = {"Movies": "movie", "Video Games": "video game", "Outdoors": "outdoors", "Hockey": "hockey"}
 
-        self.topics = ["Movie Reviews", "Xbox Game Pass", "Video Game Reviews"]       
-        self.topic_map = {"Movie Reviews": "movie review", "Xbox Game Pass": "xbox game pass", "Video Game Reviews": "video game review"}
+        self.topics = ["Movie Reviews", "Xbox Game Pass", "Video Game Reviews", "Rock Climbing", "NHL News"]       
+        self.topic_map = {"Movie Reviews": "movie review", "Xbox Game Pass": "xbox game pass", "Video Game Reviews": "video game review", "Rock Climbing": "rock climbing", "NHL News": "nhl news"}
         self.url_map = {"Movie Reviews": "movie_reviews.html", "Movies": "movies.html", "Video Games": "videogames.html", "Xbox Game Pass": "gamepass.html",
-                        "Video Game Reviews": "videogame_reviews.html"}
+                        "Video Game Reviews": "videogame_reviews.html", "Outdoors": "outdoors.html", "Rock Climbing": "rock_climbing.html", "Hockey": "hockey.html", "NHL News": "nhl_news.html"}
         self.topic_colors = {"Movie Reviews": "#E8B018", "Movies": "#E8B018", "Video Games": "#E8B018", "Video Game Reviews": "#E8B018"}
 
         self.template = "topic_temp.html"
         self.get_topic()
         self.get_section()
 
-    def open(self):
-        try:
-            self.file = open(self.template, "r")
-        except Exception as e:
-            print(e)
+    def open(self, custom_template=None):
+        if not custom_template:
+            try:
+                self.file = open(self.template, "r")
+            except Exception as e:
+                print(e)
+        else:
+            try:
+                self.file = open(custom_template, "r")
+            except Exception as e:
+                print(e)
 
     def get_topic(self):
         for topic in self.topics:
@@ -49,6 +55,10 @@ class TopicPages():
         topic_links = self.links.loc[[topic_name in topic for topic in self.links[page_type]]]
         select_link = list(range(len(topic_links)))
         random.shuffle(select_link)
+
+        # if sports section
+        if topic == "Hockey" or topic == "NHL News":
+            self.open("sports" + self.template)
         data = self.file.read()
         data = data.replace("TOPIC NAME REPLACEMENT", topic)
         # change topic color

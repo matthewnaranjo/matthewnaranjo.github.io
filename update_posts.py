@@ -4,25 +4,33 @@ from add_posts import AddPosts
 
 class UpdatePosts():
     def __init__(self, filename=None):
+        self.template = 'blog_temp.html'
+        self.folders = ["text reviews/"]        
         self.find_posts()
 
     def find_posts(self):
-        for file in os.listdir("text reviews/"):
-            if file.endswith(".txt"):
-                read = open("text reviews/" + file, "r")
-                data = read.readlines()
-                title = data[0]
-                date = data[2]
-                paragraphs = data[4:]
-                post_data = (title, date, paragraphs)
-                self.write_posts(file, post_data)
+        for folder in self.folders:
+            for file in os.listdir(folder):
+                if file.endswith(".txt"):
+                    read = open(folder + file, "r")
+                    data = read.readlines()
+                    title = data[0]
+                    date = data[2]
+                    paragraphs = data[4:]
+                    post_data = (title, date, paragraphs)
+                    self.write_posts(file, post_data)
 
     def write_posts(self, filename, post_data):
         title = post_data[0]
         date = post_data[1]
         paragraphs = post_data[2]
         image_name = filename[:-4]
-        read = open('blog_temp.html','r')
+        # if sports, use sports logo
+        if 'sports' == filename[:6]:
+            template = "sports" + self.template
+        else:
+            template = self.template
+        read = open(template,'r')
         data = read.read()
         data = data.replace("REPLACE IMAGE REF", image_name)
         data = data.replace("FIND AND REPLACE TITLE", title)
