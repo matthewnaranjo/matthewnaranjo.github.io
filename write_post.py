@@ -11,6 +11,7 @@ class Gui:
     def __init__(self,root):
         self.root=root
         self.currFile=''
+        self.textPath='/Users/mattnaranjo/documents/website/text reviews/'
         self.root.wm_title('No file selected')
         self.f=Frame(self.root,bd=3,height=30,relief=RAISED)
         self.f.pack(fill=BOTH,expand=True)
@@ -87,11 +88,12 @@ class Gui:
             read.close()
 
         #save plain text
-        print(self.currFile[:-5] + ".txt")
-        f=open(self.currFile[:-5] + ".txt",'w')
+        text_name = self.currFile.split("/")
+        text_path = self.textPath + text_name[-1][:-5] + ".txt"
+        f=open(text_path,'w')
         text = self.text.get("1.0", END)
-        f.write(title)
-        f.write(date)
+        f.write(title + '\n')
+        f.write(date + '\n')
         f.write(text)
         f.close()
         AddPosts(self.currFile)       
