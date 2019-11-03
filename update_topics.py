@@ -14,7 +14,7 @@ class TopicPages():
         self.topic_map = {"Movie Reviews": "movie review", "Xbox Game Pass": "xbox game pass", "Video Game Reviews": "video game review", "Rock Climbing": "rock climbing", "NHL News": "nhl news"}
         self.url_map = {"Movie Reviews": "movie_reviews.html", "Movies": "movies.html", "Video Games": "videogames.html", "Xbox Game Pass": "gamepass.html",
                         "Video Game Reviews": "videogame_reviews.html", "Outdoors": "outdoors.html", "Rock Climbing": "rock_climbing.html", "Hockey": "hockey.html", "NHL News": "nhl_news.html"}
-        self.topic_colors = {"Movie Reviews": "#E8B018", "Movies": "#E8B018", "Video Games": "#E8B018", "Video Game Reviews": "#E8B018"}
+        self.topic_colors = {"Movie Reviews": "#ffce2f", "Movies": "#ffce2f", "Video Games": "#ffce2f", "Video Game Reviews": "#ffce2f"}
 
         self.template = "topic_temp.html"
         self.get_topic()
@@ -64,7 +64,7 @@ class TopicPages():
         # change topic color
         if topic in self.topic_colors.keys():
             topic_color = self.topic_colors[topic]
-            data = data.replace("#E8B018", topic_color)
+            data = data.replace("#ffce2f", topic_color)
 
         self.filename = self.url_map[topic]
         print("Saving file %s" % self.filename)
