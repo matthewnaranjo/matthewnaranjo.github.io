@@ -44,6 +44,7 @@
     margin:10,
     animateOut: 'fadeOut',
     animateIn: 'fadeIn',
+    mouseDrag: false,
     nav:true,
     autoplayHoverPause: true,
     items: 1,
