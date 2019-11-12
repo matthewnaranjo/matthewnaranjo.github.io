@@ -94,8 +94,8 @@ class TopicPages():
 
                 template = """<div class="col-md-12">
                       <a href="%s" class="blog-entry element-animate" data-animate-effect="fadeIn">
-                        <img src="images/%s.jpg" alt="" width="265" height="148" class="float-left mr-2 rounded">
-                        <div class="blog-content-body" style="height: 148px;">
+                        <img src="images/%s.jpg" alt="Image placeholder" width="350" height="200" class="float-left mr-2 rounded">
+                        <div class="blog-content-body" style="min-height: 200px; height: auto;">
                           <h2>%s</h2>
                           <div class="post-meta">
                             <span class="mr-2">%s</span>

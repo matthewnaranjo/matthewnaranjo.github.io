@@ -105,7 +105,7 @@ header {
 .absolute-toggle {
   position: absolute;
   left: 15px;
-  top: 5px; }
+  top: -35px; }
   .absolute-toggle .burger-lines {
     width: 30px;
     display: inline-block;
@@ -319,8 +319,8 @@ header {
   min-height: 550px;
   height: 50vh; }
 
-.site-section {
-  padding: 7em 0; }
+.site-section { 
+  padding: 5em 0; }
   .site-section.py-md {
     padding: 3em 0; }
   .site-section.py-sm {
@@ -491,13 +491,14 @@ header {
     border: 1px solid #efefef;
     border-top: none; }
   .blog-entries .blog-entry img {
-    max-width: 100%; }
+    max-width: 100%;
+    max-height: 200px;}
   .blog-entries .blog-entry h2 {
-    font-size: 18px;
-    line-height: 1.5; }
+    font-size: 22px;
+    line-height: 1.5;
+    display: block; }
   .blog-entries .blog-entry p {
-    font-size: 13px;
-    color: gray; }
+    font-size: 13px;}
 
 .blog-entries .post-meta {
   margin-bottom: 20px;
