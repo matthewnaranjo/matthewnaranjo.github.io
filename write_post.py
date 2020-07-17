@@ -5,13 +5,19 @@ matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
 import webbrowser
 import os
-from add_posts import AddPosts
+from update_posts import UpdatePosts
+from image_editor import ImageEditor
 
 class Gui:
     def __init__(self,root):
+
+        def focus_next_window(event):
+            event.widget.tk_focusNext().focus()
+            return("break")
+
         self.root=root
         self.currFile=''
-        self.textPath='/Users/mattnaranjo/documents/website/text reviews/'
+        self.textPath='/Users/mattnaranjo/documents/fannotated/text reviews/'
         self.root.wm_title('No file selected')
         self.f=Frame(self.root,bd=3,height=30,relief=RAISED)
         self.f.pack(fill=BOTH,expand=True)
@@ -20,19 +26,25 @@ class Gui:
         self.newLoad=Button(self.f,text='Load',command=lambda: self.loadF())
         self.newSaveAs=Button(self.f,text='Save As',command=lambda: self.saveAsF())
         self.newPreview=Button(self.f,text='Preview',command=lambda: self.preview())
+        self.newImage=Button(self.f,text='New Image', command=lambda: self.addImage())
+        self.newMainImage=Button(self.f,text='Add Main Image', command=lambda: self.addMainImage())
         self.newBut.pack(side=LEFT)
         self.newSave.pack(side=LEFT)
         self.newSaveAs.pack(side=LEFT)
         self.newLoad.pack(side=LEFT)
         self.newPreview.pack(side=LEFT)
+        self.newImage.pack(side=LEFT)
+        self.newMainImage.pack(side=LEFT)
         self.title = Text(self.root,height=1,width=150)
+        self.title.bind("<Tab>", focus_next_window)
         self.title.pack(fill=BOTH,expand=True)
         self.date = Text(self.root,height=1,width=150)
+        self.date.bind("<Tab>", focus_next_window)
         self.date.pack(fill=BOTH,expand=True)
         self.text=Text(self.root,height=50, width=150)
         self.scroll=Scrollbar(self.root,command=self.text.yview)
         self.text.configure(yscrollcommand=self.scroll.set)
-        self.text.pack(side=LEFT,fill=BOTH,expand=True)
+        self.text.pack(fill=BOTH,expand=True)
         self.scroll.pack(side=RIGHT,fill=Y)
 
         self.file_opt = options = {}
@@ -58,14 +70,18 @@ class Gui:
         self.popup.destroy()
         if boo:
             self.saveF(self.currFile)
+            self.title.delete(1.0,END)
+            self.date.delete(1.0,END)
             self.text.delete(1.0,END)
             
         else:
             inp=self.text.get(1.0,END)
             print(inp)
+            self.title.delete(1.0,END)
+            self.date.delete(1.0,END)
             self.text.delete(1.0,END)
             
-            
+    # maybe use update post class for this?
     def saveF(self, filename):
         
         #get text from editor and split into paragraphs
@@ -73,30 +89,21 @@ class Gui:
         title = self.title.get("1.0", END)
         date = self.date.get("1.0", END)
         paragraphs = t.split('\n\n')
-        image_name = filename.split("/")[-1][:-5]
-        read = open('blog_temp.html','r')
-        data = read.read()
-        data = data.replace("REPLACE IMAGE REF", image_name)
-        data = data.replace("FIND AND REPLACE TITLE", title)
-        data = data.replace("FIND AND REPLACE DATE", date)
-
-        if len(paragraphs) > 0:
-            t = ["<p>%s</p>" % p for p in paragraphs if p != '']
-            data = data.replace("FIND AND REPLACE BODY", "\n".join(t))
-            write = open(self.currFile, 'w')
-            write.write(data)
-            read.close()
+        post_data = [title, date, paragraphs]
+        update_posts = UpdatePosts()
+        update_posts.write_posts(filename, post_data)
 
         #save plain text
-        text_name = self.currFile.split("/")
-        text_path = self.textPath + text_name[-1][:-5] + ".txt"
+        text_name = self.currFile.split('/')
+        text_name = text_name[-1].split('.')
+        text_path = self.textPath + text_name[0] + ".txt"
+        print(text_path)
         f=open(text_path,'w')
         text = self.text.get("1.0", END)
         f.write(title + '\n')
         f.write(date + '\n')
         f.write(text)
-        f.close()
-        AddPosts(self.currFile)       
+        f.close()    
             
     def loadF(self):
         inp=self.text.get(1.0,END)
@@ -130,6 +137,28 @@ class Gui:
         if self.currFile == '':
             self.saveAsF()
         webbrowser.open_new('file://' + self.currFile)
+
+    #adds chosen photo to images folder, distinguishes text from photos, ensures it is jpg
+    def addImage(self):
+        try:
+            self.image_name=fd.askopenfilename()
+            save_image = ImageEditor()
+            new_photopath = save_image.copyPhoto(self.image_name)
+            self.text.insert(END,"\n\nimage*" + new_photopath)
+        except Exception as e: 
+            print("caught in addImage: %s" % e)
+
+    #adds chosen photo to images folder, distinguishes text from photos, ensures it is jpg
+    def addMainImage(self):
+        try:
+            self.image_name=fd.askopenfilename()
+            save_image = ImageEditor()
+            if self.currFile == '':
+                self.saveAsF()
+            new_photopath = save_image.addMainPhoto(self.image_name, self.currFile)
+            print("successfully saved %s." % new_photopath)
+        except Exception as e: 
+            print("caught in addMainImage: %s" % e)
 
 def main():
     root=Tk()

@@ -1,6 +1,9 @@
-title
+Test Title
 
-date
+7/16/2020
+
+This is my article.
 
 
-text
+
+image*/Users/mattnaranjo/documents/fannotated/images/avalanche-lake.jpg
